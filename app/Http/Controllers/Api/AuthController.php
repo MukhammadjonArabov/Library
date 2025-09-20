@@ -34,7 +34,7 @@ class AuthController extends Controller
         $role = Role::where('name', 'User')->first();
         if (!$role) {
             return response()->json([
-                'status' => false,
+                'status'  => false,
                 'message' => 'Role "User" not found. Please run roles migration/seed.'
             ], 500);
         }
