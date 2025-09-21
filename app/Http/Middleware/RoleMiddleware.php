@@ -12,25 +12,30 @@ class RoleMiddleware
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string[]  ...$roles   // Ruxsat berilgan rollar
+     * @param  string[]  ...$roles
      * @return mixed
      */
     public function handle(Request $request, Closure $next, ...$roles)
     {
         $user = $request->user();
+
         if (!$user) {
             return response()->json([
                 'status' => false,
-                'message' => 'Unauthorized ❌'
+                'message' => 'Unauthorized ❌ (token topilmadi)'
             ], 401);
         }
 
-        $userRole = $user->role->name ?? null;
+        // 🔹 Agar users jadvalida `role` ustuni string bo‘lsa
+        $userRole = $user->role ?? null;
 
-        if (!in_array($userRole, $roles)) {
+        // 🔹 Agar `role_id` bilan Role jadvali bo‘lsa:
+        // $userRole = $user->role->name ?? null;
+
+        if (!$userRole || !in_array($userRole, $roles)) {
             return response()->json([
                 'status' => false,
-                'message' => 'Access denied ❌'
+                'message' => "Access denied ❌. Sizning rolingiz: " . ($userRole ?? 'yo‘q')
             ], 403);
         }
 
