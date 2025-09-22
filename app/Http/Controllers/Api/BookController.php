@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\User;
@@ -27,12 +28,10 @@ class BookController extends Controller
             ], 422);
         }
 
-        // 🔹 Book yaratish
         $book = Book::create($request->only([
             'title', 'isbn', 'published_year', 'available_copies'
         ]));
 
-        // 🔹 Author rolidagi foydalanuvchilarni biriktirish
         $authorRole = Role::where('name', 'Author')->first();
 
         if ($authorRole) {
