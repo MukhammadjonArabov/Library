@@ -28,4 +28,11 @@ class BookController extends Controller
             $query->latest()->paginate($perPage)
         );
     }
+
+    public function show(Book $book)
+    {
+        $book->load('author', 'borrowings');
+
+        return new BookResource($book);
+    }
 }
