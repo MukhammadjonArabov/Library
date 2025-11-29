@@ -35,4 +35,27 @@ class BookController extends Controller
 
         return new BookResource($book);
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'author_id'       => 'required|exists:authors,id',
+            'title'           => 'required|string|max:255',
+            'isbn'            => 'required|string|max:13|unique:books,isbn',
+            'published_year'  => 'required|integer|min:1000|max:' . date('Y'),
+            'total_copies'    => 'required|integer|min:1',
+            'description'     => 'nullable|string',
+            'cover_image'     => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('cover_image')) {
+            $validated['cover_image'] = $request->file('cover_image')->store('covers', 'public');
+        }
+
+        $validated['available_copies'] = $validated['total_copies'];
+
+        $book = Book::create($validated);
+
+        return new BookResource($book);
+    }
 }
