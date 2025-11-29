@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('authors', function (Blueprint $table) {
             $table->id();
-            $yable->string('name');
+            $table->string('name');
             $table->string('surname');
             $table->date('birth_date')->nullable();
-            $table->text('bio')-nullable();
+            $table->text('bio')->nullable();
             $table->timestamps();
         });
     }
