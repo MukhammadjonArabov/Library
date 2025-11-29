@@ -10,7 +10,7 @@ class Borrowing extends Model
 {
     use HasFactory;
 
-    protected $filable = [
+    protected $fillable = [
         'book_id',
         'user_id',
         'borrower_name',

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
 {
@@ -11,7 +11,9 @@ class Author extends Model
 
     protected $fillable = ['name', 'surname', 'birth_date', 'bio'];
 
-    protected $cats = ['birth_date' => 'date',];
+    protected $casts = [
+        'birth_date' => 'date',
+    ];
 
     public function books()
     {
@@ -20,6 +22,6 @@ class Author extends Model
 
     public function getFullNameAttribute()
     {
-        return "{$this->name} {$this->surname}";
+        return trim("{$this->name} {$this->surname}");
     }
 }
