@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Author;
 use Illuminate\Http\Request;
+use App\Http\Resources\AuthorResource;
 
 class AuthorController extends Controller
 {
@@ -12,7 +13,19 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        $perPage = request()->query('per_page', 15);
+        $search = request()->query('search');
+
+        $query = Author::with('books');
+
+        if ($search) {
+            $query->where(function ($q) use ($search){
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('surname', 'like', "%{$search}%");
+            });
+        }
+        $authors = $query->latest()->paginate($perPage);
+        return AuthorResource::collection($authors)->response();
     }
 
     /**

@@ -54,7 +54,6 @@ class BookController extends Controller
             $validated['cover_image'] = $request->file('cover_image')->store('covers', 'public');
         }
 
-        // Dastlab available_copies total_copies bilan tenglashtiriladi
         $validated['available_copies'] = $validated['total_copies'];
 
         $book = Book::create($validated);
@@ -100,6 +99,15 @@ class BookController extends Controller
         return response()->json([
             'message' => 'Book updated successfully',
             'data'    => new BookResource($book),
+        ]);
+    }
+
+    public function destroy(Book $book)
+    {
+        $book->delete();
+
+        return response()->json([
+            'message' => 'Book deleted successfully',
         ]);
     }
 }
